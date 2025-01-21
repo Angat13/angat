@@ -1,20 +1,27 @@
-const { error } = require('console')
-const mongoose= require('mongoose')
+const mongoose = require('mongoose');
+require('dotenv').config(); // Load environment variables
 
-const mongodbURL=("mongodb://localhost:27017/hotels")
+const mongodbURL = process.env.MONGODB_URL;
 
-mongoose.connect(mongodbURL)
-const db = mongoose.connection
+if (!mongodbURL) {
+    console.error('Error: MONGODB_URL is not defined in the .env file.');
+    process.exit(1); // Exit the process with failure
+}
 
-db.on('connected',()=>{
-    console.log("Connected")
-})
-db.on('disconnected',()=>{
-    console.log("disconnected")
-})
+mongoose.connect(mongodbURL);
 
-db.on('error',(error)=>{
-    console.error("there is error",error)
-})
-module.exports=db;
+const db = mongoose.connection;
 
+db.on('connected', () => {
+    console.log('MongoDB connected successfully');
+});
+
+db.on('disconnected', () => {
+    console.log('MongoDB disconnected');
+});
+
+db.on('error', (error) => {
+    console.error('MongoDB connection error:', error);
+});
+
+module.exports = db

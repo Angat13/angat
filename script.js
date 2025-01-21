@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const db = require('./config/db')
 const personrouter = require("./routes/Personroute")
-
+require('dotenv').config()
 
 
 app.use(express.json())
